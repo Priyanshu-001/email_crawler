@@ -3,7 +3,7 @@ const  puppeteer  = require("puppeteer");
 async function explore(startingLInk,counter=20,disallowed=new Set()){
     let visited = new Set();
     let q  = []
-    q.push(URL(startingLInk))
+    q.push(new URL(startingLInk))
     const browser = await puppeteer.launch({headless: false});
     allMails = new Set()
     while(q.length !== 0 && counter>0 )
@@ -30,7 +30,7 @@ async function explore(startingLInk,counter=20,disallowed=new Set()){
        links.forEach(function(link){
         if(!visited.has(link) && isValidUrl(link) && !disallowed.has(link))
         {
-            q.push(link)
+            q.push(new URL(link))
         }
        });
 
