@@ -8,6 +8,7 @@ async function explore(startingLInk,counter=20,disallowed=new Set()){
     let q  = []
     q.push(startingLInk)
     await robots.useRobotsFor(startingLInk)
+    visited.add(startingLInk);
 
     const browser = await puppeteer.launch({headless: false});
     allMails = new Set()
@@ -18,7 +19,6 @@ async function explore(startingLInk,counter=20,disallowed=new Set()){
         q.shift()
 
        
-        visited.add(site);
         try{
           await page.goto(site);
           console.log('visitng '+site)
@@ -42,6 +42,7 @@ async function explore(startingLInk,counter=20,disallowed=new Set()){
         if(!visited.has(link) && isValidUrl(link))
         {
             q.push(link)
+            visited.add(link)
         }
        });
 
@@ -49,11 +50,11 @@ async function explore(startingLInk,counter=20,disallowed=new Set()){
        counter-=1;
     }
     browser.close()
-    return {emailFound: [...allMails]}
+    return {emailsFound: [...allMails]}
 }
 
 module.exports = {explore}
-explore('https://www.gtbit.org/contact.php',3).then(console.log)
+// explore('https://www.gtbit.org/contact.php',3).then(console.log)
 
 //helper functions
 function isValidUrl(link) {
